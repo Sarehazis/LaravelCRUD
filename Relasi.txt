@@ -1,0 +1,5 @@
+Relasi Laravel
+
+one to one -> hasOne ->BelongsTo
+one to many -> hasMany
+Many To Many ->  BelongssToMany
