@@ -18,7 +18,7 @@
     <thead>
         <tr>
             <th>No</th>
-            <th>image</th>
+            <th>Image</th>
             <th>Title</th>
             <th>Description</th>
             <th>Project Type</th>
@@ -42,14 +42,14 @@
                 </ul>
             </td>
             <td>
-                <a href="{{route('admin.projects.edit', $project->id)}}" class="badge bg-primary">Edit</a>
-                {{-- <form method="POST" action="{{route('admin.project-types.destroy', [
-                    'id' => $pt->id
+                <a href="{{route('admin.projects.edit', $project->id)}}" class="btn bg-primary text-white">Edit</a>
+                <form method="POST" action="{{route('admin.projects.destroy', [
+                    'id' => $project->id
                 ]) }}">
                 @csrf
                 @method('delete')
-                    <button class="badge bg-danger border-1">Del</button>
-                </form> --}}
+                    <button class="btn bg-danger border-1 text-white mt-1">Delete</button>
+                </form>
             </td>
         </tr>
         @endforeach

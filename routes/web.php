@@ -71,4 +71,5 @@ Route::group(['prefix'=>'admin', 'as' => 'admin.', 'middleware' => 'auth'], func
     Route::post('/projects/store', [ProjectController::class,'store'])->name('projects.store');
     Route::get('/projects/{id}/edit', [ProjectController::class,'edit'])->name('projects.edit');
     Route::patch('/projects/{id}', [ProjectController::class,'update'])->name('projects.update');
+    Route::delete('/projects/{id}', [ProjectController::class,'destroy'])->name('projects.destroy');
 });

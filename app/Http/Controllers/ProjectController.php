@@ -64,4 +64,41 @@ class ProjectController extends Controller
         }
         return view('admin.project.edit', compact('project', 'projectTypes', 'project_types_selected'));
     }
+
+    public function update($id, Request $request)
+    {
+        $project = Project::find($id);
+        
+        if(empty($project))
+        {
+            // abort(404);
+            return redirect()->route('admin.projects.index')->with('error','Project not found');
+        }
+
+        if($request->hasFile('image'))
+        {
+            $file = $request->file('image');
+            $path = $file->storeAs('project-images', $file->hashName(), 'public');
+            $project->image = $path;
+        }
+
+        $project->tittle = $request->tittle;
+        $project->description = $request->description;
+        $project->save();
+        $project->project_types()->sync($request->project_type);
+        return redirect()->route('admin.projects.index')->with('success', 'Project successfully updated');
+    }
+
+    public function destroy($id)
+    {
+        $project = Project::find($id);
+
+        if(empty($project))
+        {
+            return redirect()->route('admin.projects.index')->with('error','Project not found');
+        }
+
+        $project->delete();
+        return redirect()->route('admin.projects.index')->with('success', 'Project successfully deleted');
+    }
 }
