@@ -18,12 +18,12 @@ class ProjectController extends Controller
     public function create()
     {
         $projectTypes = ProjectType::all();
-        return view('admin.project.create', compact('projectTypes'));
+        return view('admin.project.create', ['projectTypes' => $projectTypes]);
     }
 
     public function store(Request $request)
     {
-        // Validate 
+            // Validate 
         $request->validate([
             'tittle' => 'required'
         ]);
@@ -42,51 +42,66 @@ class ProjectController extends Controller
         $project->save();
         $project->project_types()->sync($request->project_type);
 
-        return redirect()->route('admin.projects.index')->with('success', 'Project successfully created');
+        return redirect()->route('admin.projects.index')->with('success', 'Project successfully created');       
     }
 
     public function edit($id)
     {
-        $project = Project::find($id);
-
+        {
+        // dd($id);
+        //logika get data
+ 
+        $project = Project::with([
+            'project_types'
+        ])->find($id);
+       
         if(empty($project))
         {
             // abort(404);
-            return redirect()->route('admin.projects.index')->with('error','Project not found');
+            return redirect()-> route('admin.projects.index')->with('error', 'Project not found');
         }
-
+       
         $projectTypes = ProjectType::all();
-        // $project_types = $project->project_types->pluck('id')->toArray();
-
-        foreach($project->project_types as $pt)
-        {
+ 
+        $project_types_selected = [];
+        foreach ($project->project_types as $pt) {
             $project_types_selected[] = $pt->id;
         }
+       
+        //logika nampilin data kirim ke view
         return view('admin.project.edit', compact('project', 'projectTypes', 'project_types_selected'));
+    }
     }
 
     public function update($id, Request $request)
     {
+        $request->validate([
+            'tittle' => ['required'],
+            'description' => ['required'],
+            'image' => ['nullable', 'image'],
+            'project_type' => ['nullable'],
+        ]);
+   
         $project = Project::find($id);
-        
-        if(empty($project))
-        {
-            // abort(404);
-            return redirect()->route('admin.projects.index')->with('error','Project not found');
+   
+        if (empty($project)) {
+            return redirect()->route('admin.projects.index')->with('error', 'Project not found');
         }
-
-        if($request->hasFile('image'))
-        {
+   
+        if ($request->hasFile('image')) {
             $file = $request->file('image');
             $path = $file->storeAs('project-images', $file->hashName(), 'public');
             $project->image = $path;
-        }
+        } 
 
+   
         $project->tittle = $request->tittle;
         $project->description = $request->description;
         $project->save();
+   
         $project->project_types()->sync($request->project_type);
-        return redirect()->route('admin.projects.index')->with('success', 'Project successfully updated');
+   
+        return redirect()->route('admin.projects.index')->with('success', 'Project updated successfully');
     }
 
     public function destroy($id)

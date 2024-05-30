@@ -24,14 +24,14 @@
       <textarea name="description" id="description" rows="5" class="form-control ">{{ $project->description }}</textarea>
   </div>
   <div class="mb-3">
-    <label for="">Project Types</label>
+    <label for="">Project types</label>
     <select name="project_type[]" multiple class="form-control">
-      @foreach ($projectTypes as $projectType)
-          <option value="{{$projectType->id}}" @if(in_array($projectType->id, $project_types_selected)) selected @endif>{{$projectType->type}}</option>
-      @endforeach
+        @foreach ($projectTypes as $projectType)
+            <option value="{{ $projectType->id }}" @if (in_array($projectType->id, $project_types_selected)) selected @endif>{{ $projectType->type }}</option>
+        @endforeach
     </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Add</button>
-  <a href="{{route('admin.projects.index')}}" class="btn btn-danger">Cancel</a>
+</div>
+  <button type="submit" class="btn btn-primary">Edit</button>
+  <a href="{{ route('admin.projects.index') }}" class="btn btn-danger">Cancel</a>
 </form>
 @endsection

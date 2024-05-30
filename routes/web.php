@@ -5,6 +5,7 @@ use App\Http\Controllers\ProjectTypeController;
 use App\Http\Controllers\Project1Controller;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -49,7 +50,8 @@ Route::get('/dua', [Project1Controller::class, 'jurusan']);
 
 // Login
 Route::get('login', [LoginController::class, 'login'])->name('login')->middleware('guest');
-Route::get('register', [LoginController::class, 'register'])->name('register');
+Route::get('register', [RegisterController::class, 'register'])->name('register');
+Route::post('register/proses',[RegisterController::class, 'prosesregister'])->name('register.proses');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 Route::post('login', [LoginController::class, 'proseslogin'])->name('login.proses');
 
